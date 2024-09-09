@@ -2,7 +2,8 @@
 </script>
 
 <template>
-  <main>
-    <h1>Hello World</h1>
+  <main class="app">
+    <h1>Tasks</h1>
+    <h2>My Tasks</h2>
   </main>
 </template>
