@@ -2,17 +2,22 @@ const express = require("express")
 const cheerio = require("cheerio")
 const puppeteer = require("puppeteer")
 const { error } = require("console")
+const cors = require('cors')
 const port = 8000
 
 const app = express()
 app.use(express.json())
+app.use(cors({
+  origin: '*'
+}))
+
 
 app.get("/", (req, res) => {
     res.send("Hello World!")
 })
 
 app.post("/login", (req, res) => {
-    console.log(res)
+    const {sid, password} = req.body
 })
 
 app.get('/scrape', async (req, res) => {
@@ -26,7 +31,6 @@ app.get('/scrape', async (req, res) => {
     await page.waitForNetworkIdle();
     switch(await page.url()){
       case "https://portal.edpass.sa.edu.au/":
-        console.log(await page.$$x('//*[@id="0oamc0sv2IbQE6VD33l6"]'))
         await page.$$x('//*[@id="0oamc0sv2IbQE6VD33l6"]').click();
         await page.waitForNavigation();
       case "https://edpass-0927.okta.com/":
