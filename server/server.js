@@ -31,7 +31,10 @@ app.get('/scrape', async (req, res) => {
     await page.waitForNetworkIdle();
     switch(await page.url()){
       case "https://portal.edpass.sa.edu.au/":
-        await page.$$x('//*[@id="0oamc0sv2IbQE6VD33l6"]').click();
+        const gihs = await page.waitForSelector('tr.idp:nth-child(166)')
+        await gihs.click();
+        const cont = await page.waitForSelector('.continue_button');
+        await cont.click();
         await page.waitForNavigation();
       case "https://edpass-0927.okta.com/":
         //enter username and password
