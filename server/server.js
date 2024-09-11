@@ -4,11 +4,15 @@ const puppeteer = require("puppeteer")
 const { error } = require("console")
 const port = 8000
 
-// Temporary username and password
 const app = express()
+app.use(express.json())
 
 app.get("/", (req, res) => {
     res.send("Hello World!")
+})
+
+app.post("/login", (req, res) => {
+    console.log(res)
 })
 
 app.get("/scrape", async (req, res) => {
@@ -19,10 +23,11 @@ app.get("/scrape", async (req, res) => {
     let failCount = 0
     while (failCount < 3) {
         await page.goto("https://gihs.daymap.net/daymap/student/dayplan.aspx")
+        await page.waitForNetworkIdle()
         switch (await page.url()) {
             case "https://portal.edpass.sa.edu.au/":
-                console.log(await page.$("tr.idp:nth-child(166)"))
-                await page.$("tr.idp:nth-child(166)").click()
+                console.log(await page.$$x('//*[@id="0oamc0sv2IbQE6VD33l6"]'))
+                await page.$$x('//*[@id="0oamc0sv2IbQE6VD33l6"]').click()
                 await page.waitForNavigation()
             case "https://edpass-0927.okta.com/":
             //enter username and password
