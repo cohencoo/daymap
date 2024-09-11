@@ -1,19 +1,19 @@
-const express = require('express');
-const cheerio = require('cheerio');
-const puppeteer = require('puppeteer');
-const { error } = require('console');
-const port = 8000;
+const express = require("express")
+const cheerio = require("cheerio")
+const puppeteer = require("puppeteer")
+const { error } = require("console")
+const port = 8000
 
-const app = express();
-app.use(express.json());
+const app = express()
+app.use(express.json())
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+app.get("/", (req, res) => {
+    res.send("Hello World!")
+})
 
-app.post('/login', (req, res) => {
-  console.log(res);
-} );
+app.post("/login", (req, res) => {
+    console.log(res)
+})
 
 app.get('/scrape', async (req, res) => {
   // Starting a Puppeteer instance
@@ -41,4 +41,4 @@ app.get('/scrape', async (req, res) => {
 });
 
 app.listen(port)
-console.log(`Server is running on http://localhost:${port}`);
+console.log(`Server is running on http://localhost:${port}`)
