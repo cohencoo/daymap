@@ -66,3 +66,7 @@ button {
     border-radius: 0.5rem;
     width: 450px;
 }
+
+.fc-timegrid-slot-lane {
+    border: 0 !important;
+}

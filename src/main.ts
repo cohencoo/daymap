@@ -22,7 +22,11 @@ interface User {
 const user: User = {
     id: Date.now().toString(),
     name: "John Doe",
-    timetable: [],
+    timetable: [
+        { title: "Digital Technologies", start: "2024-09-16T14:25:00", end: "2024-09-16T15:25:00" },
+        { title: "Digital Technologies", start: "2024-09-18T09:50:00", end: "2024-09-18T11:05:00" },
+        { title: "Digital Technologies", start: "2024-09-20T13:25:00", end: "2024-09-20T14:25:00" },
+    ],
     tasks: [
         {
             id: Math.random().toString(),
@@ -38,7 +42,7 @@ const user: User = {
     password: "hashed_password",
 }
 
-export default user
-
 app.use(router)
 app.mount("#app")
+
+export default user
