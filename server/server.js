@@ -5,6 +5,7 @@ const { error } = require("console")
 const cors = require('cors')
 const port = 8000
 const fs = require('fs')
+const { fail } = require("assert")
 // checking if file exists before loading it
 console.log(fs.existsSync('./config.json'))
 if (fs.existsSync('./config.json')){
@@ -48,14 +49,14 @@ app.get('/scrape', async (req, res) => {
   // Starting a Puppeteer instance
   const browser = await puppeteer.launch({headless: false});
   const page = await browser.newPage();
-  await page.setDefaultNavigationTimeout(1500); 
+  // await page.setDefaultNavigationTimeout(1500); 
   // Navigating to the page and handling Auth
   let failCount = 0;
   while (failCount<3){
     try{
-      await page.goto('https://gihs.daymap.net/daymap/student/dayplan.aspx');
+      await page.goto('https://gihs.daymap.net/daymap/student/classdiary.aspx');
       console.log("navigated to daymap");
-      await page.waitForNetworkIdle();
+      await page.waitForResponse(response => response.status() === 200);
       console.log("network idle");
       let submit;
       switch(await page.url()){
@@ -105,13 +106,18 @@ app.get('/scrape', async (req, res) => {
     }
     catch {
       failCount++;
+    }}
+    if (failCount == 3){
+      res.status(500).send("Failed to login")
+      await browser.close();
+      throw error("Failed to login");
     }
     
-    console.log('escaped');
-    const content = await page.content();
+    console.log('escaped' + failCount);
+    await page.waitForNetworkIdle();
+    const diaryContent = await page.content();
     await browser.close();
-    res.send(content);
-  }
+    // console.log(content);
 });
 
 app.listen(port)
