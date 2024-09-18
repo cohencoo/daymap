@@ -1,1 +1,9 @@
-npm i && npm run dev && cd server && npm i && node .
+#!/bin/bash
+
+realpath() {
+    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
+
+realpath "$0"
+
+npm i && npm run dev & cd server && npm i && npm run server
