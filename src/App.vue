@@ -3,16 +3,12 @@ import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Dashboard</RouterLink>
-        <RouterLink to="/assignments">Assignments</RouterLink>
-        <RouterLink to="/tasks">Tasks</RouterLink>
-      </nav>
-    </div>
-  </header>
-  <RouterView />
+  <aside>
+    <RouterLink to="/"><div>Dashboard</div></RouterLink>
+    <RouterLink to="/assignments"><div>Assignments</div></RouterLink>
+    <RouterLink to="/tasks"><div>Tasks</div></RouterLink>
+  </aside>
+  <div class="shifted">
+    <RouterView />
+  </div>
 </template>
-
-<style scoped></style>

@@ -4,6 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import user from "@/main"
+// import "@/assets/base.css"
 
 export default {
   components: {
@@ -36,11 +37,14 @@ export default {
 </script>
 
 <template>
+  <nav>
+    <div>
+      <h2>Welcome Back,</h2>
+      <span>{{user.name}}</span>
+    </div>
+  </nav>
   <main class="app">
-    <h1>Welcome Back,</h1>
-    <h2>{{user.name}}</h2>
-
-    <div style="width: 800px">
+    <div style="width: 1070px">
       <FullCalendar :options="calendarOptions" />
     </div>
   </main>

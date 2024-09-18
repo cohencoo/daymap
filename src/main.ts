@@ -10,7 +10,7 @@ const app = createApp(App)
  * MOCK DATA
  */
 
-interface User {
+export interface User {
     id?: string
     name?: string
     timetable: Object[]

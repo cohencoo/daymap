@@ -4,6 +4,46 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+nav {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+}
+nav h2 {
+    color: white;
+}
+
+aside {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 250px;
+    background: #222;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 5px;
+}
+
+aside div {
+    padding: 1rem;
+    border-radius: 10px;
+    transition: 0.2s;
+    font-size: 1rem;
+    font-weight: 500;
+}
+aside div:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.shifted {
+    position: absolute;
+    left: 250px;
+    top: 0;
 }
 
 .app {
@@ -15,16 +55,8 @@
 }
 
 a {
-    color: rgb(192, 237, 255);
+    color: white;
     text-decoration: none;
-}
-
-nav {
-    background-color: #222;
-    padding: 1rem;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
 }
 
 input {
@@ -67,6 +99,16 @@ button {
     width: 450px;
 }
 
-.fc-timegrid-slot-lane {
+thead {
+    background-color: #007bff;
+    color: white;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+.fc-theme-standard * {
     border: 0 !important;
 }
