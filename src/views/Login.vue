@@ -12,7 +12,6 @@
 </template>
 
 <script lang="ts">
-
 import axios from 'axios';
 
 export default {

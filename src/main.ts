@@ -56,10 +56,19 @@ const updateUserDetails: User = {
     tasks: [
         {
             id: Math.random().toString(),
-            title: "AT3",
+            title: "AT2 Collaboration Task",
             teacher: "Hocking",
             class: "Digital Technologies",
-            description: "Description 1",
+            description: "Collaborate with your group to complete the AT2 task",
+            submitted: false,
+            dueDate: new Date(),
+        },
+        {
+            id: Math.random().toString(),
+            title: "AT3 Individual Solution",
+            teacher: "Hocking",
+            class: "Digital Technologies",
+            description: "Create a solution for the AT3 task",
             submitted: false,
             dueDate: new Date(),
         },
