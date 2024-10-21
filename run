@@ -6,4 +6,4 @@ realpath() {
 
 realpath "$0"
 
-npm i && npm run dev & cd server && npm i && npm run server
+(trap 'kill 0' SIGINT; npm i && npm run dev & cd server && npm i && npm run server)
