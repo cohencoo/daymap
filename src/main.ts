@@ -78,11 +78,54 @@ const updateUserDetails: User = {
 };
 
 // Simulate mock data (real data) being loaded in
-setTimeout(() => {
-    store.dispatch('updateUser', updateUserDetails);
-}, 1000);
+// setTimeout(() => {
+//     store.dispatch('updateUser', updateUserDetails);
+// }, 1000);
 
-// Once we have this fetched data, use LocalStorage to store user data for offline use
+
+// const studentIdInput = document.getElementById("studentId") as any;
+// const passwordInput = document.getElementById("password") as any;
+// const { sid, password } = { sid: studentIdInput.ref.value, password: passwordInput.ref.value };
+
+
+// if (localStorage.getItem("credentials")) {
+    // const { sid, password } = JSON.parse(localStorage.getItem("credentials") as string);
+
+// }
+
+if (!navigator.onLine) {
+    // console log green lime
+    console.log("%cNo internet connection available. Loading offline-saved user data...", "color: #ffb300");
+    const data = JSON.parse(localStorage.getItem("userData") as string);
+
+    if (!data) {
+        console.error("Failed to load data from offline localStorage")
+    } else store.dispatch('updateUser', data);
+} else {
+    const { sid, password } = { sid: "200076", password: "********" };
+
+    fetch("http://localhost:8000/test-scrape", { // fetches our backend scrape DayMap endpoint
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            sid: sid,
+            password: password, 
+        }),
+    })
+    .then((res) => res.text())
+    .then((data) => {
+        data = JSON.parse(data);
+
+        console.log("%cInternet connection available. Fetching & offline-saving user data...", "color: lime");
+
+        store.dispatch('updateUser', data);
+
+        localStorage.setItem("userData", JSON.stringify(data)); // store data for offline use
+    });
+}
+
 
 app.use(store);
 app.use(router);

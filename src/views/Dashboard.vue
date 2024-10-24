@@ -12,7 +12,7 @@
         <div class="info">
           <h2>
             {{ nextLesson.title }} at 
-            {{ new Date(nextLesson.start).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) }}</h2>
+            {{ nextLesson.start && new Date(nextLesson.start).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) }}</h2>
           <span>{{ timeUntilNextLesson }}</span>
         </div>
       </div>
@@ -61,9 +61,10 @@ export default defineComponent({
     const nextLesson = computed(() => {
       const now = new Date();
       const upcomingLessons = user.value.timetable
-        .map((event: { start: string }) => ({
+        .map((event: { title: string, start: string }) => ({
           ...event,
           start: new Date(event.start),
+          title: event.title + " (3CL12)"
         }))
         .filter((event: { start: Date }) => event.start.getTime() > now.getTime())
         .sort((a: any, b: any) => a.start.getTime() - b.start.getTime());
