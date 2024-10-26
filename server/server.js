@@ -6,6 +6,8 @@ const cors = require("cors");
 const port = 8000;
 const fs = require("fs");
 const { fail } = require("assert");
+const bodyParser = require('body-parser');
+const {setTimeout} = require("node:timers/promises");
 
 try {
   const config = require("./config.json");
@@ -20,6 +22,7 @@ console.log(sid)
 
 const app = express();
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: "*",
@@ -64,11 +67,11 @@ async function findTimetable(page) {
 }
 
 app.get("/", (req, res) => {
-  res.send("hello world");
+  res.sendFile(__dirname + "/index.html");
 });
 
 app.post("/login", (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
   let { sid, password } = req.body;
   if (!sid || !password) {
     res.status(400).send("Missing SID or Password");
@@ -85,18 +88,17 @@ app.get("/scrape", async (req, res) => {
   // Starting a Puppeteer instance
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
-  await page.setDefaultNavigationTimeout(1500);
+  await page.setDefaultNavigationTimeout(6000);
   // Navigating to the page and handling Auth
   let failCount = 0;
   let success = false;
+  // console.log("navigated to daymap");
   while (failCount < 3 && success == false) {
     try {
-      console.log(failCount);
       await page.goto("https://gihs.daymap.net/daymap/student/dayplan.aspx");
-      // console.log("navigated to daymap");
       await page.waitForResponse((response) => response.status() === 200);
-      // console.log("network idle");
-      let submit;
+      await setTimeout(1000);
+      console.log(failCount);
       const url = await page.url() 
       const parsedUrl = new URL(url);
       const baseUrl = `${parsedUrl.protocol}//${parsedUrl.hostname}`;
@@ -107,18 +109,7 @@ app.get("/scrape", async (req, res) => {
           await gihs.click();
           const cont = await page.waitForSelector(".continue_button");
           await cont.click();
-          // await page.waitForNavigation();
-          await page.waitForSelector("#okta-signin-username");
-          if (!{ sid, password }) {
-            throw error("Missing Username and/or password");
-          } else {
-            await page.type("#okta-signin-username", sid);
-            await page.type("#okta-signin-password", password);
-          }
-          submit = await page.waitForSelector(".button.button-primary");
-          await submit.click();
-          break;
-        case "https://edpass-0927.okta.com/":
+        case "https://edpass-0927.okta.com":
           console.log("okta");
           await page.waitForSelector("#okta-signin-username");
           if (!{ sid, password }) {
@@ -127,24 +118,27 @@ app.get("/scrape", async (req, res) => {
             await page.type("#okta-signin-username", sid);
             await page.type("#okta-signin-password", password);
           }
-          submit = await page.waitForSelector(".button.button-primary");
+          let submit = await page.waitForSelector(".button.button-primary");
           await submit.click();
           break;
-        case "https://gihs.daymap.net/":
+        case "https://gihs.daymap.net":
           success = true;
           break;
         default:
           throw error(`unknown website ${baseUrl}`);
       }
-      await page.waitForNetworkIdle();
+      console.log("end switch");
+      await setTimeout(3000);
       // console.log('idle')
       if (page.url() == "https://gihs.daymap.net/daymap/student/dayplan.aspx") {
         // console.log('daymap')
         break;
       } else {
+        console.log('page?');
         failCount++;
       }
     } catch {
+      console.log('crash');
       failCount++;
     }
   }
